@@ -7,6 +7,7 @@ import se.lunchreader.domain.Meal;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +21,9 @@ public class Mynchen {
     private static final String URL = "https://static1.squarespace.com/static/578916fc725e25c4aa70ea79/t/5ba0a67c575d1ff43f1db1d7/1537255036662/veckanslunch.pdf";
     private static final Pattern REGEX = Pattern.compile("(\\D*) (\\d*):-");
 
-    public List<Meal> onMenu() throws IOException {
+    public List<Meal> onMenu(DayOfWeek dayOfWeek) throws IOException {
         var lines = parsePdf(new URL(URL));
-        var todaysMenu = findTodaysMenu(lines);
+        var todaysMenu = findTodaysMenu(lines, dayOfWeek);
         var allwaysOnMenu = findAllwaysOnMenu(lines);
 
         return Stream.concat(todaysMenu, allwaysOnMenu)
@@ -48,8 +49,8 @@ public class Mynchen {
                 .takeWhile(line -> !line.equals("Sushi"));
     }
 
-    private Stream<String> findTodaysMenu(List<String> lines) {
-        String todayInSwedish = WeekDays.WEEK_DAYS_TO_SWEDISH.get(now().getDayOfWeek());
+    private Stream<String> findTodaysMenu(List<String> lines, DayOfWeek dayOfWeek) {
+        String todayInSwedish = WeekDays.WEEK_DAYS_TO_SWEDISH.get(dayOfWeek);
         return lines.stream()
                 .dropWhile(line -> !line.equals(todayInSwedish))
                 .dropWhile(line -> line.equals(todayInSwedish))
