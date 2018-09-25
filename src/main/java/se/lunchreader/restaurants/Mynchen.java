@@ -8,13 +8,12 @@ import se.lunchreader.domain.Meal;
 import java.io.IOException;
 import java.net.URL;
 import java.time.DayOfWeek;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static java.time.LocalDate.now;
+import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
 public class Mynchen {
@@ -24,9 +23,9 @@ public class Mynchen {
     public List<Meal> onMenu(DayOfWeek dayOfWeek) throws IOException {
         var lines = parsePdf(new URL(URL));
         var todaysMenu = findTodaysMenu(lines, dayOfWeek);
-        var allwaysOnMenu = findAllwaysOnMenu(lines);
+        var alwaysOnMenu = findAlwaysOnMenu(lines);
 
-        return Stream.concat(todaysMenu, allwaysOnMenu)
+        return Stream.concat(todaysMenu, alwaysOnMenu)
                 .flatMap(line -> parseMeal(line).stream())
                 .collect(toList());
     }
@@ -42,7 +41,7 @@ public class Mynchen {
         return Optional.of(new Meal(desc, price));
     }
 
-    private Stream<String> findAllwaysOnMenu(List<String> lines) {
+    private Stream<String> findAlwaysOnMenu(List<String> lines) {
         return lines.stream()
                 .dropWhile(line -> !line.equals("Hela veckan"))
                 .dropWhile(line -> line.equals("Hela veckan"))
@@ -58,7 +57,7 @@ public class Mynchen {
     }
 
     private List<String> parsePdf(URL url) throws IOException {
-        try (PDDocument document = PDDocument.load(url.openStream())) {
+        try (var document = PDDocument.load(url.openStream())) {
             if (document.isEncrypted()) {
                 throw new UnsupportedOperationException("Can not parse encrypted pdf's");
             }
@@ -66,18 +65,10 @@ public class Mynchen {
             var textStripper = new PDFTextStripper();
             var text = textStripper.getText(document);
 
-            return Arrays.stream(text.split("\\r?\\n"))
-                    .filter(this::nonEmptyLine)
-                    .map(this::strip)
+            return text.lines()
+                    .filter(not(String::isEmpty))
+                    .map(String::strip)
                     .collect(toList());
         }
-    }
-
-    private boolean nonEmptyLine(String it) {
-        return !it.isEmpty();
-    }
-
-    private String strip(String it) {
-        return it.stripLeading().stripTrailing();
     }
 }
