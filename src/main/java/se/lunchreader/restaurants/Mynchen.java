@@ -30,16 +30,6 @@ public class Mynchen {
                 .collect(toList());
     }
 
-    private Optional<Meal> parseMeal(String line) {
-        var matcher = REGEX.matcher(line);
-        if (!matcher.matches() || matcher.groupCount() != 2){
-            return Optional.empty();
-        }
-
-        var desc = matcher.group(1);
-        var price = Double.parseDouble(matcher.group(2));
-        return Optional.of(new Meal(desc, price));
-    }
 
     private Stream<String> findAlwaysOnMenu(List<String> lines) {
         return lines.stream()
@@ -54,6 +44,17 @@ public class Mynchen {
                 .dropWhile(line -> !line.equals(todayInSwedish))
                 .dropWhile(line -> line.equals(todayInSwedish))
                 .takeWhile(line -> !WeekDays.SWEDISH_WEEK_DAYS.contains(line));
+    }
+
+    private Optional<Meal> parseMeal(String line) {
+        var matcher = REGEX.matcher(line);
+        if (!matcher.matches() || matcher.groupCount() != 2) {
+            return Optional.empty();
+        }
+
+        var desc = matcher.group(1);
+        var price = Double.parseDouble(matcher.group(2));
+        return Optional.of(new Meal(desc, price));
     }
 
     private List<String> parsePdf(URL url) throws IOException {
