@@ -39,7 +39,7 @@ public class Mynchen {
     }
 
     private Stream<String> findTodaysMenu(List<String> lines, DayOfWeek dayOfWeek) {
-        String todayInSwedish = WeekDays.WEEK_DAYS_TO_SWEDISH.get(dayOfWeek);
+        var todayInSwedish = WeekDays.WEEK_DAYS_TO_SWEDISH.get(dayOfWeek);
         return lines.stream()
                 .dropWhile(line -> !line.equals(todayInSwedish))
                 .dropWhile(line -> line.equals(todayInSwedish))
