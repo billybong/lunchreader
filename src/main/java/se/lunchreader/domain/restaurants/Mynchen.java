@@ -47,7 +47,7 @@ public class Mynchen implements Restaurant {
         return lines.stream()
                 .dropWhile(line -> !line.equals(section))
                 .dropWhile(line -> line.equals(section))
-                .takeWhile(line -> !Mynchen.SUFFIXES.contains(line));
+                .takeWhile(line -> !SUFFIXES.contains(line));
     }
 
     private Optional<Meal> parseMeal(String line) {
