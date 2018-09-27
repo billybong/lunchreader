@@ -1,4 +1,4 @@
-package se.lunchreader.domain;
+package se.lunchreader.domain.data;
 
 public class Meal {
     public final String description;

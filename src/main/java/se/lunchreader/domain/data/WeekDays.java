@@ -1,4 +1,4 @@
-package se.lunchreader;
+package se.lunchreader.domain.data;
 
 import java.time.DayOfWeek;
 import java.util.Collection;
