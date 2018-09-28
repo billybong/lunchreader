@@ -18,17 +18,17 @@ import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
 public class Mynchen implements Restaurant {
-    //private static final String URL = "https://static1.squarespace.com/static/578916fc725e25c4aa70ea79/t/5ba0a67c575d1ff43f1db1d7/1537255036662/veckanslunch.pdf";
-    private static final String URL = "file:///home/billy/dev/projects/lunchreader/src/main/resources/veckanslunch.pdf";
+    private static final String URL = "https://static1.squarespace.com/static/578916fc725e25c4aa70ea79/t/5ba0a67c575d1ff43f1db1d7/1537255036662/veckanslunch.pdf";
+    //private static final String URL = "file:///home/billy/dev/projects/lunchreader/src/main/resources/veckanslunch.pdf";
     private static final Pattern REGEX = Pattern.compile("(\\D*) (\\d*):-");
     public static final List<String> SUFFIXES = Stream.concat(WeekDays.SWEDISH_WEEK_DAYS.stream(), Stream.of("Hela veckan", "Sushi")).collect(toList());
 
     @Override
     public List<Meal> onMenu(DayOfWeek dayOfWeek) {
-        var lines = parsePdf(URI.create(URL));
 
         var dayInSwedish = WeekDays.WEEK_DAYS_TO_SWEDISH.get(dayOfWeek);
 
+        var lines = parsePdf(URI.create(URL));
         var linesForDay = findLinesForSection(lines, dayInSwedish);
         var linesForAlwaysOnMenu = findLinesForSection(lines, "Hela veckan");
 

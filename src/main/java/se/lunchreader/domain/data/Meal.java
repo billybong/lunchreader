@@ -1,7 +1,11 @@
 package se.lunchreader.domain.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Meal {
+    @JsonProperty("desc")
     public final String description;
+    @JsonProperty("price")
     public final double priceInSek;
 
     public Meal(String description, double priceInSek) {
