@@ -3,20 +3,28 @@ package se.lunchreader.infrastructure;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import se.lunchreader.domain.service.RestaurantFinder;
+import se.lunchreader.infrastructure.config.Config;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import static io.javalin.apibuilder.ApiBuilder.get;
-import static java.time.LocalDate.now;
 
-public class Server {
-
-    private final Config config;
+@Singleton
+public class Server implements AutoCloseable {
     private final RestaurantFinder restaurantFinder;
     private final Javalin javalin;
+    private final int port;
 
+    @Inject
     public Server(Config config, RestaurantFinder restaurantFinder) {
-        this.config = config;
         this.restaurantFinder = restaurantFinder;
+        this.port = config.port();
         javalin = Javalin.create().routes(this.routes());
+    }
+
+    public void start(){
+        javalin.start(port);
     }
 
     private EndpointGroup routes() {
@@ -26,11 +34,8 @@ public class Server {
         };
     }
 
-    public void start(){
-        javalin.start(config.port);
-    }
-
-    public void stop(){
+    @Override
+    public void close() {
         javalin.stop();
     }
 }

@@ -1,23 +1,16 @@
 package se.lunchreader.domain.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.auto.value.AutoValue;
 
-public class Meal {
+@AutoValue
+public abstract class Meal {
     @JsonProperty("desc")
-    public final String description;
+    abstract String description();
     @JsonProperty("price")
-    public final double priceInSek;
+    abstract double priceInSek();
 
-    public Meal(String description, double priceInSek) {
-        this.description = description;
-        this.priceInSek = priceInSek;
-    }
-
-    @Override
-    public String toString() {
-        return "Meal{" +
-                "description='" + description + '\'' +
-                ", priceInSek=" + priceInSek +
-                '}';
+    public static Meal create(String description, double priceInSek) {
+        return new AutoValue_Meal(description, priceInSek);
     }
 }
