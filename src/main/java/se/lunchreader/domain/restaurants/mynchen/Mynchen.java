@@ -3,6 +3,7 @@ package se.lunchreader.domain.restaurants.mynchen;
 import se.lunchreader.domain.data.WeekDays;
 import se.lunchreader.domain.data.Meal;
 import se.lunchreader.domain.data.Restaurant;
+import se.lunchreader.infrastructure.client.IPdfParser;
 import se.lunchreader.infrastructure.client.PdfParser;
 
 import javax.inject.Inject;
@@ -21,10 +22,10 @@ public class Mynchen implements Restaurant {
     private static final String URL = "https://static1.squarespace.com/static/578916fc725e25c4aa70ea79/t/5ccfb97cec212dcb44fe039b/1557117308361/Veckans+Lunch.pdf";
     private static final Pattern REGEX = Pattern.compile("(\\D*) (\\d*):-");
     private static final List<String> SUFFIXES = Stream.concat(WeekDays.SWEDISH_WEEK_DAYS.stream(), Stream.of("Hela veckan", "Sushi")).collect(toList());
-    private final PdfParser pdfParser;
+    private final IPdfParser pdfParser;
 
     @Inject
-    public Mynchen(PdfParser pdfParser) {
+    public Mynchen(IPdfParser pdfParser) {
         this.pdfParser = pdfParser;
     }
 

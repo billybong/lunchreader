@@ -5,6 +5,8 @@ import dagger.Provides;
 import se.lunchreader.domain.data.Restaurant;
 import se.lunchreader.domain.restaurants.laulau.Laulau;
 import se.lunchreader.domain.restaurants.mynchen.Mynchen;
+import se.lunchreader.infrastructure.client.IPdfParser;
+import se.lunchreader.infrastructure.client.PdfParser;
 import se.lunchreader.infrastructure.config.Config;
 
 import javax.inject.Singleton;
@@ -28,5 +30,11 @@ public class LunchModule {
         return asList(
                 mynchen
         );
+    }
+
+    @Provides
+    @Singleton
+    public IPdfParser pdfParser(){
+        return new PdfParser();
     }
 }
