@@ -13,7 +13,12 @@ import java.util.List;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
+@Singleton
 public class PdfParser implements IPdfParser {
+
+    @Inject
+    public PdfParser() {
+    }
 
     @Override
     public List<String> parsePdf(URI url) {

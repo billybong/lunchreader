@@ -3,7 +3,7 @@ package se.lunchreader.domain.restaurants.laulau;
 import se.lunchreader.domain.data.Meal;
 import se.lunchreader.domain.data.Restaurant;
 import se.lunchreader.infrastructure.client.IPdfParser;
-import se.lunchreader.infrastructure.client.PdfParser;
+import se.lunchreader.infrastructure.config.Config;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,10 +18,10 @@ public class Laulau implements Restaurant {
     private final URI url;
 
     @Inject
-    public Laulau(IPdfParser menuReader, LauLauMenuParser menuParser, URI url) {
+    public Laulau(IPdfParser menuReader, LauLauMenuParser menuParser, Config config) {
         this.menuReader = menuReader;
         this.menuParser = menuParser;
-        this.url = url;
+        url = config.lauLauUri();
     }
 
     @Override
