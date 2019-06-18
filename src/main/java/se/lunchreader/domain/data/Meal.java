@@ -1,5 +1,6 @@
 package se.lunchreader.domain.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.auto.value.AutoValue;
 
@@ -10,7 +11,8 @@ public abstract class Meal {
     @JsonProperty("price")
     abstract double priceInSek();
 
-    public static Meal create(String description, double priceInSek) {
+    @JsonCreator
+    public static Meal create(@JsonProperty("desc") String description, @JsonProperty("price") double priceInSek) {
         return new AutoValue_Meal(description, priceInSek);
     }
 }
