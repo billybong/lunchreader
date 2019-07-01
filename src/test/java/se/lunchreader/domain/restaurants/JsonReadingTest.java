@@ -37,4 +37,11 @@ public class JsonReadingTest {
         var response = httpClient.send(request, bodyHandler);
         System.out.println(response.body());
     }
+
+    @Test
+    void blaj() throws IOException, InterruptedException {
+        var request = HttpRequest.newBuilder(URI.create("http://localhost:7090/lunch")).build();
+        var response = httpClient.send(request, bodyHandlers.jsonNodeHandler());
+        System.out.println(response.body().get(0).get("restaurant").textValue());
+    }
 }

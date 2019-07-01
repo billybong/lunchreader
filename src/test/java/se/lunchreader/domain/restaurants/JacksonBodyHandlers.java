@@ -1,6 +1,7 @@
 package se.lunchreader.domain.restaurants;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -21,6 +22,10 @@ public class JacksonBodyHandlers {
 
     public <T> HttpResponse.BodyHandler<T> handlerFor(Class<T> clazz){
         return responseInfo -> subscriberFrom((bytes) -> objectMapper.readValue(bytes, clazz));
+    }
+
+    public HttpResponse.BodyHandler<JsonNode> jsonNodeHandler(){
+        return responseInfo -> subscriberFrom(objectMapper::readTree);
     }
 
     private <T> HttpResponse.BodySubscriber<T> subscriberFrom(IOFunction<byte[], T> ioFunction) {
